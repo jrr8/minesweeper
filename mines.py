@@ -28,11 +28,14 @@ class Board:
         return self.board[item]
 
     def __str__(self):
-        return '\n'.join([
-            '\t' + ' '.join([
-                '?' if (i, j) not in self.cleared else '_' for j in range(len(self))
-            ]) for i in range(len(self))
-        ])
+        rows = ['\t   ' + ' '.join([str(i+1).rjust(2) for i in range(len(self))])]  # First, print header
+
+        for i in range(len(self)):
+            rows.append('\t' + '  '.join([str(i+1).rjust(2)] + [
+                ('?' if (i, j) not in self.cleared else '_') for j in range(len(self))
+            ]))
+
+        return '\n'.join(rows)
 
     def __len__(self):
         return len(self.board)
@@ -78,7 +81,6 @@ class Game:
 
     def start(self):
         self.set_difficulty()
-        print('(mines at {})'.format([(i, j) for i in range(len(self.board)) for j in range(len(self.board)) if self.board[i][j]]))
         self.play()
 
     def set_difficulty(self):
